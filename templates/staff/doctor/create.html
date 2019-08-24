@@ -1,0 +1,481 @@
+{% extends 'operator/_base.html' %}
+{% load static i18n %}
+
+{% block content %}
+    <div class="content-title">
+            <h2>Регистрация врачей</h2>
+        </div>
+        <div class="card-main">
+            <div class="card-main__header">
+                <h2>Форма регистрации</h2>
+            </div>
+            <div class="card-main__content">
+                <form class="doctor-form">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#main">Личные данные</a></li>
+                        <li><a data-toggle="tab" href="#other">Профессиональные данные</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="main" class="tab-pane fade in active">
+                            <div class="dr-head__main">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="fullName">ФИО</label>
+                                                <input name="full_name" type="text" class="form-control" id="fullName">
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="gender">Пол</label>
+                                                <select class="form-control selectpicker show-tick" name="gender" id="gender">
+                                                    <option value="">Выберите</option>
+                                                    <option value="0">Мужчина</option>
+                                                    <option value="1">Женьщина</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="birthYear">Год рождения</label>
+                                                <input name="birth_year" type="text" class="form-control" id="birthYear">
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="nation">Национальность</label>
+                                                <select class="form-control selectpicker show-tick" name="nation" id="nation">
+                                                    <option value="">Выберите</option>
+                                                    <option value="1">Узбек</option>
+                                                    <option value="2">Русский</option>
+                                                    <option value="3">Казах</option>
+                                                    <option value="4">Таджик</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="passportSerial">Серия паспорта</label>
+                                                <input name="passport_serial" type="text" class="form-control" id="passportSerial">
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="phone">Телефон номер</label>
+                                                <input name="phone" type="text" class="form-control" id="phone">
+                                            </div>
+                                        </div>
+                                        <div class="dr-head__item">
+                                            <div class="form-group">
+                                                <label for="email">Э-Почта</label>
+                                                <input name="email" type="text" class="form-control" id="email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="photos-upload__main">
+                                            <div class="passport-upload">
+                                                <div class="passport-edit">
+                                                    <input type='file' name="passport_image" id="passportUpload" accept=".png, .jpg, .jpeg" />
+                                                    <label for="passportUpload"></label>
+                                                </div>
+                                                <a data-fancybox href="#">
+                                                    <div class="passport-preview">
+                                                        <div id="passportPreview">
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="passport-upload__button">
+                                                    <div class="pasport-icon">
+                                                        <img src="/static/operator/images/passport.svg" style="width: 75px">
+                                                    </div>
+                                                    <label>Копия паспорта</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="photos-upload__main">
+                                            <div class="avatar-upload humanAvatar">
+                                                <div class="avatar-edit">
+                                                    <input type='file' name="avatar" id="avatarUpload" accept=".png, .jpg, .jpeg" />
+                                                    <label for="avatarUpload"></label>
+                                                </div>
+                                                <a data-fancybox href="#">
+                                                    <div class="avatar-preview">
+                                                        <div id="avatarPreview">
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="avatar-upload__button">
+                                                    <div class="photos-icon">
+                                                        <img style="width: 75px;" src="/static/operator/images/upload_icon.png">
+                                                    </div>
+                                                    <label class="humanUploadButton">Фото </label>
+                                                </div>
+                                                <label class="humanUploadButton humanCameraEdit__icon"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                         </div>
+                        <div id="other" class="tab-pane fade">
+                            <div class="dr-head__content">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Образование</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nameOfUniversity">Название ВУЗа</label>
+                                                <select class="form-control selectpicker show-tick" name="name_of_university" id="nameOfUniversity">
+                                                    <option value="">Выберите</option>
+                                                    {% for university in universities %}
+                                                        <option value="{{ university.id }}">{{university}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="faculty">Факултут</label>
+                                                <select class="form-control selectpicker show-tick" name="faculty" id="faculty">
+                                                    <option value="">Выберите</option>
+                                                    {% for faculty in faculties %}
+                                                        <option value="{{faculty.id}}">{{faculty}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="yearOfCompletion">Год выпуска</label>
+                                                <input name="year_of_completion" type="text" class="form-control" id="yearOfCompletion">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Категория</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="category">Категория</label>
+                                                <select class="form-control selectpicker show-tick" name="category" id="category">
+                                                    <option value="">Выберите</option>
+                                                    {% for type in types  %}
+                                                        <option value="{{ type.id }}">{{type.name_ru}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="CategorySpecialization">Специальность категории</label>
+                                                <select class="form-control selectpicker show-tick" name="category_specialization" id="CategorySpecialization">
+                                                    <option value="">Выберите</option>
+                                                    {% for spec in specs  %}
+                                                        <option value="{{ spec.id }}">{{spec.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="categoryGivenYear">Полученный год</label>
+                                                <input name="category_given_year" type="text" class="form-control" id="categoryGivenYear">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Повышение квалификации</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upgradingSkills">Специальность</label>
+                                                <select class="form-control selectpicker show-tick" name="upgrading_skills" id="upgradingSkills">
+                                                    <option value="">Выберите</option>
+                                                    {% for spec in specs  %}
+                                                        <option value="{{ spec.id }}">{{spec.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upgradingYear">Год повышения квалификации</label>
+                                                <input name="upgrading_year" type="text" class="form-control" id="upgradingYear">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upgradingHours">Часы повышения квалификаци</label>
+                                                <input name="upgrading_hours" type="text" class="form-control" id="upgradingHours">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Занимаемая должность</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="task">Должность</label>
+                                                <input name="task" type="text" class="form-control" id="task">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="taskStartedYear">Начало работы (год)</label>
+                                                <input name="task_started_year" type="text" class="form-control" id="taskStartedYear">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Специальность</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="specialtyName">Название специальности</label>
+                                                <select class="form-control selectpicker show-tick" name="specialty_name" id="specialtyName">
+                                                    <option value="">Выберите</option>
+                                                    {% for spec in specs  %}
+                                                        <option value="{{ spec.id }}">{{spec.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="specialtyStartedYear">Год получение</label>
+                                                <input name="specialty_started_year" type="text" class="form-control" id="specialtyStartedYear">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="dr-head-content__item">
+                                            <div class="title">
+                                                <h2>Кандидат медицинских наук</h2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="medicalCandidate">Кандидат наук</label>
+                                                <input name="medical_candidate" type="text" class="form-control" id="medicalCandidate">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="medicalCandidateGivenYear">Год выдачи</label>
+                                                <input name="medical_candidate_given_year" type="text" class="form-control" id="medicalCandidateGivenYear">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-send__buttons">
+                                <div class="form-send__button">
+                                    <button id="formSendButton" type="submit" data-url="{% url 'doctor.create.api' %}">Сохранить</button>
+                                </div>
+                                <!--<div class="form-reset__buttton">
+                                    <button type="reset">Очистить</button>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+
+        $("#phone").inputmask({
+        "mask": "+998-dd-ddd-dddd"
+        });
+        $("#birthYear, #yearOfCompletion, #categoryGivenYear, #upgradingYear, #taskStartedYear, #specialtyStartedYear, #medicalCandidateGivenYear").inputmask({
+            "mask": "dddd"
+        });
+        $("#passportSerial").inputmask({
+            "mask": "AA ddddddd"
+        });
+        var scanCheck = false;
+
+        $(function(){
+            var wsurl = 'wss://127.0.0.1:8282/';
+            var ws = new WebSocket(wsurl);
+            ws.onopen = function (data) {
+                var x = document.getElementById("wsSuccess");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+            ws.onerror = function(){
+                var x = document.getElementById("wsError");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+
+            function readUrlImage(passport, data){
+                $(`${passport} #passportPreview`).css('background-image', 'url('+'data:image/jpg;base64,'+data +')');
+                $(`${passport} > a`).attr("href", `data:image/jpg;base64,${data}`);
+                $(`${passport} .passport-edit input`).attr("value", `data:image/jpg;base64,${data}`);
+                $(`${passport} #passportPreview`).hide();
+                $(`${passport} #passportPreview`).fadeIn(650);
+                $(`${passport} .passport-upload__button`).fadeOut(650);
+            }
+
+            ws.onmessage = function(e) {
+                var data = JSON.parse(e.data);
+
+                $("#fullNameEn").val(data.first_name + " " + data.last_name);
+                $("#birthDate").val(new Date(data.birth_date).toShortFormat());
+                $("#passportExpires").val(new Date(data.expiry_date).toShortFormat());
+                $("#passportSerial").val(data.serial);
+                readUrlImage('.passport-upload', data.image);
+
+                if (data.sex === "M") {
+                    $("#gender_female").attr("checked", false);
+                    $("#gender_male").attr("checked", true);
+                } else if (data.sex === "F") {
+                    $("#gender_male").attr("checked", false);
+                    $("#gender_female").attr("checked", true);
+                }
+
+                scanCheck = true;
+
+            };
+
+            function readPassportURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#passportPreview').css('background-image', 'url('+e.target.result +')');
+                        $(`.passport-upload > a`).attr("href", `${e.target.result}`);
+                        $('#passportPreview').hide();
+                        $('#passportPreview').fadeIn(650);
+                        $('.passport-upload__button').fadeOut(650);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#passportUpload").change(function() {
+                readPassportURL(this);
+                scanCheck = false;
+            });
+
+            function readAvatarURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#avatarPreview').css('background-image', 'url('+e.target.result +')');
+                        $(`.avatar-upload > a`).attr("href", `${e.target.result}`);
+                        $('#avatarPreview').hide();
+                        $('#avatarPreview').fadeIn(650);
+                        $('.avatar-upload__button').fadeOut(650);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#avatarUpload").change(function() {
+                readAvatarURL(this);
+            });
+
+
+
+        });
+
+
+
+        $(function () {
+            $("#formSendButton").click(function (event) {
+                event.preventDefault();
+
+                let formData = new FormData();
+
+                function b64toBlob(b64Data, contentType, sliceSize) {
+                    contentType = contentType || '';
+                    sliceSize = sliceSize || 512;
+
+                    var byteCharacters = atob(b64Data);
+                    var byteArrays = [];
+
+                    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                        var byteNumbers = new Array(slice.length);
+                        for (var i = 0; i < slice.length; i++) {
+                            byteNumbers[i] = slice.charCodeAt(i);
+                        }
+
+                        var byteArray = new Uint8Array(byteNumbers);
+
+                        byteArrays.push(byteArray);
+                    }
+
+                    var blob = new Blob(byteArrays, {type: contentType});
+                    return blob;
+                }
+
+                if(scanCheck){
+                    var ImageURL  = $("#passportUpload").attr('value');
+                    var block = ImageURL.split(";");
+                    // Get the content type
+                    var contentType = 'image/jpg';// In this case "image/gif"
+                    // get the real base64 content of the file
+                    var realData = block[1].split(",")[1];// In this case "iVBORw0KGg...."
+
+                    // Convert to blob
+                    var blob = b64toBlob(realData, contentType);
+                    var passportCopy = new File([blob], 'passportCopy.jpg', {type: contentType});
+
+                    formData.append("passport_image", passportCopy);
+                }else{
+                    formData.append("passport_image", $("input[name='passport_image']")[0].files[0]);
+                }
+                formData.append("avatar", $("input[name='avatar']")[0].files[0]);
+
+                formData.append("full_name", $("input[name='full_name']").val());
+                formData.append("gender", $("select[name='gender']").val());
+                formData.append("birth_year", $("input[name='birth_year']").val());
+                formData.append("nationality", $("select[name='nation']").val());
+                formData.append("passport_serial", $("input[name='passport_serial']").val());
+                formData.append("phone", $("input[name='phone']").val());
+                formData.append("email", $("input[name='email']").val());
+
+                formData.append("knowledge_university", $("select[name='name_of_university']").val());
+                formData.append("knowledge_faculty", $("select[name='faculty']").val());
+                formData.append("knowledge_year", $("input[name='year_of_completion']").val());
+
+                formData.append("type_type", $("select[name='category']").val());
+                formData.append("type_name", $("select[name='category_specialization']").val());
+                formData.append("type_year", $("input[name='category_given_year']").val());
+
+                formData.append("training_speciality", $("select[name='upgrading_skills']").val());
+                formData.append("training_year", $("input[name='upgrading_year']").val());
+                formData.append("training_hours", $("input[name='upgrading_hours']").val());
+
+                formData.append("function_name", $("input[name='task']").val());
+                formData.append("function_year", $("input[name='task_started_year']").val());
+
+                formData.append("specialization_speciality", $("select[name='specialty_name']").val());
+                formData.append("specialization_year", $("input[name='specialty_started_year']").val());
+
+                formData.append("medical_candidate_name", $("input[name='medical_candidate']").val());
+                formData.append("medical_candidate_year", $("input[name='medical_candidate_given_year']").val());
+
+                $.ajax({
+                    url: $(this).data("url"),
+                    data: formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
