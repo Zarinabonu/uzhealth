@@ -40,13 +40,25 @@ class IndexPage(LoginRequiredMixin, TemplateView):
 
         listt = [year - 20, year - 25, year - 30, year - 35, year - 40, year - 45, year - 50, year - 55, year - 60, year - 65, year - 70, year - 75, year - 80, year - 85]
         for i in range(0, len(listt) - 1):
-            doctors = Doctor.objects.filter(work_place__user=self.request.user)
+            doctors = Doctor.objects.filter(jobs__work_place__user=self.request.user)
             doctors = doctors.filter(birth_year__gte=listt[i + 1])
             doctors = doctors.filter(birth_year__lte=listt[i])
             arr2.append(doctors.count())
         response = [{'range': i, 'doctor_count': dc} for i, dc in zip(arr, arr2)]
-
         context['by_ages'] = response
+
+        list = []
+        list2 = []
+        special_list = Speciality.objects.all()
+        for s in special_list:
+            doc = Doctor.objects.filter(jobs__work_place__user=self.request.user)
+            doc = doc.filter(specialization__speciality=s)
+            list.append(doc.count())
+            list2.append(s.name)
+        response = [{'speciality': spec, 'doctor_count': dcount} for spec, dcount in zip(list2, list)]
+        print('LIST OF SPECIALIZATION: ', response)
+
+
         op = Operator.objects.get(user=self.request.user)
 
         context['male_cnt'] = Doctor.objects.filter(work_place=op.institution, gender=0).count()
@@ -119,8 +131,21 @@ class AdminIndexPage(TemplateView):
         response = [{'range': i, 'doctor_count': dc} for i, dc in zip(arr, arr2)]
 
         context['by_ages'] = response
+
+        list = []
+        list2 = []
+        special_list = Speciality.objects.all()
+        city = City.objects.all()
+        for s in special_list:
+            # doc = Doctor.objects.filter(work_place__district__city=c)
+            doc = Doctor.objects.filter(specialization__speciality=s)
+            list.append(doc.count())
+            list2.append(s.name)
+        response = [{'speciality': spec, 'doctor_count': dcount} for spec, dcount in zip(list2, list)]
         context['male_cnt'] = Doctor.objects.filter(gender=0).count()
         context['female_cnt'] = Doctor.objects.filter(gender=1).count()
+
+
         # context['districts'] = District.objects.all()
         return context
 
@@ -143,17 +168,33 @@ class AdminDistrictStatisticPage(DetailView):
 
         listt = [year - 20, year - 25, year - 30, year - 35, year - 40, year - 45, year - 50, year - 55, year - 60, year - 65, year - 70, year - 75, year - 80, year - 85]
         for i in range(0, len(listt) - 1):
-            doctors = Doctor.objects.filter(work_place__district__city_id=city_id)
+            # =city_id)
+            doctors = Doctor.objects.filter(jobs__work_place_id=city_id)
             doctors = doctors.filter(birth_year__gte=listt[i + 1])
             doctors = doctors.filter(birth_year__lte=listt[i])
             arr2.append(doctors.count())
         response = [{'range': i, 'doctor_count': dc} for i, dc in zip(arr, arr2)]
 
         context['by_ages'] = response
+        list = []
+        list2=[]
+        special_list = Speciality.objects.all()
+        for s in special_list:
+            do = Doctor.objects.filter(jobs__work_place_id=city_id)
+            doc = do.filter(specialization__speciality=s)
+            list.append(doc.count())
+            list2.append(s.name)
+        response = [{'speciality': spec, 'doctor_count': dcount} for spec, dcount in zip(list2, list)]
+        print('RESPOMSE :',response)
+
+
+
         context['male_cnt'] = Doctor.objects.filter(work_place__district__city_id=city_id, gender=0).count()
         context['female_cnt'] = Doctor.objects.filter(work_place__district__city_id=city_id, gender=1).count()
         # context['districts'] = District.objects.all()
         return context
+
+
 
 
 # class DoctorsByYearAPIView(APIView):

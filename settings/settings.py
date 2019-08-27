@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'pure_pagination',
 
     'app',
+
 ]
 
 MIDDLEWARE = [

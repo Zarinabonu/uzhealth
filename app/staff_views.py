@@ -17,7 +17,7 @@ from app.model import University, District, City, Faculty, Institution, Institut
     Speciality
 from app.model.operator import Operator, StaffOperator
 from app.model.template import MessageTemplate
-
+import qrtools
 
 class IndexPage(LoginRequiredMixin, TemplateView):
     template_name = 'staff/index.html'
@@ -32,13 +32,25 @@ class IndexPage(LoginRequiredMixin, TemplateView):
         listt = [year - 20, year - 25, year - 30, year - 35, year - 40, year - 45, year - 50, year - 55, year - 60, year - 65, year - 70, year - 75, year - 80, year - 85]
         for i in range(0, len(listt) - 1):
             s_op = StaffOperator.objects.get(user=self.request.user)
-            doctors = Doctor.objects.filter(work_place__district__city=s_op.city)
+            doctors = Doctor.objects.filter(jobs__work_place__district__city=s_op.city)
             doctors = doctors.filter(birth_year__gte=listt[i + 1])
             doctors = doctors.filter(birth_year__lte=listt[i])
             arr2.append(doctors.count())
         response = [{'range': i, 'doctor_count': dc} for i, dc in zip(arr, arr2)]
 
         context['by_ages'] = response
+
+        list_o = []
+        list2_o = []
+        special_list = Speciality.objects.all()
+        for s in special_list:
+            s_op = StaffOperator.objects.get(user=self.request.user)
+            do = Doctor.objects.filter(jobs__work_place__district__city_id=s_op.city_id)
+            doc = do.filter(specialization__speciality=s)
+            list_o.append(doc.count())
+            list2_o.append(s.name)
+        response = [{'speciality': spec, 'doctor_count': dcount} for spec, dcount in zip(list2_o, list_o)]
+        print('RESPOMSE 111:', response)
         context['male_cnt'] = Doctor.objects.filter(work_place__district__city=s_op.city, gender=0).count()
         context['female_cnt'] = Doctor.objects.filter(work_place__district__city=s_op.city, gender=1).count()
         return context
@@ -94,6 +106,8 @@ class StaffIndexPage(TemplateView):
         response = [{'range': i, 'doctor_count': dc} for i, dc in zip(arr, arr2)]
 
         context['by_ages'] = response
+
+
         # context['districts'] = District.objects.all()
         return context
 
@@ -172,5 +186,15 @@ class StaffOperatorListPage(ListView):
         # print(c_op.city)
         context['districts'] = District.objects.filter(city=c_op.city)
         return context
+
+
+class QR_Code_Get_DoctorInfo(View):
+    def get(self, request):
+        qr = qrtools
+        d = Doctor.objects.get(id=self.request.GET.get('id'))
+        qr.decode(d.qr_file)
+        print(qr.data)
+
+
 
 

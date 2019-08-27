@@ -90,8 +90,5 @@ class TemplateDetailView(DetailView):
         i = Institution.objects.get(user=self.request.user)
 
         context['cities'] = City.objects.all()
-        # work_place__user
-        # self.request.user
         context['doctors'] = Doctor.objects.filter(work_place__id=op.institution.id)
-        #print('Context :', context['doctors'])
         return context

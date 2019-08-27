@@ -9,6 +9,8 @@ from django.db.models.signals import post_save
 from datetime import datetime
 import settings
 from settings.settings import REGION_CODES
+import pyqrcode
+from django.core.files import File
 
 GENDER = (
     (0, _('Male')),
@@ -30,6 +32,7 @@ class Doctor(models.Model):
     email = models.CharField(max_length=255, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     register_num = models.TextField(null=True,blank=True)
+    qr_file = models.FileField(null=True, upload_to="files/")
     # auto_increment_id = models.AutoField(primary_key=True)
 
 
@@ -42,7 +45,7 @@ class Doctor(models.Model):
 
 
 class WorkPlaces(models.Model):
-    doctor = models.ForeignKey(Doctor, null=True, on_delete=models.DO_NOTHING)
+    doctor = models.ForeignKey(Doctor, null=True, on_delete=models.DO_NOTHING, related_name='jobs')
     work_place = models.ForeignKey(Institution, on_delete=models.CASCADE, null=True, blank=True)
 
 
@@ -71,16 +74,21 @@ def create_doctor_user(sender, instance, created, **kwargs):
         r6 = str(REGION_CODES.get(instance.work_place.district.city.name_uz))
         print('WW',r1,r2,r3,r4,r5,r6)
         instance.register_num = r1+r2+r3+r4+r5+r6
+        somesjon = '{"register": ' + instance.register_num + '}'
+        quar = pyqrcode.create(somesjon)
+        quar.svg('qr_code.svg', scale=8)
+        local_file = open('qr_code.svg')
+        djangofile = File(local_file)
+        instance.qr_file.save('qr_img'+str(instance.id), djangofile)
+        local_file.close()
+
+
         instance.save()
 
         id += 1
 
 
 
-
-
-
-        # instance.register_num=#
 
 
 class Function(models.Model):
